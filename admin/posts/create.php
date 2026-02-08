@@ -96,6 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create New Post - Admin Panel</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Note: Replace 'no-api-key' with your TinyMCE API key for production use -->
     <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
 <body class="bg-gray-100">
@@ -175,15 +176,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                        placeholder="/uploads/image.jpg">
                             </div>
                             
-                            <!-- Status -->
+                            <!-- Status (Read-only display) -->
                             <div>
-                                <label for="status" class="block text-sm font-medium text-gray-700 mb-2">Status</label>
-                                <select id="status" name="status"
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
-                                    <option value="draft" <?php echo ($formData['status'] ?? 'draft') === 'draft' ? 'selected' : ''; ?>>Draft</option>
-                                    <option value="published" <?php echo ($formData['status'] ?? '') === 'published' ? 'selected' : ''; ?>>Published</option>
-                                    <option value="scheduled" <?php echo ($formData['status'] ?? '') === 'scheduled' ? 'selected' : ''; ?>>Scheduled</option>
-                                </select>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                                <input type="text" id="status-display" readonly
+                                       value="Draft"
+                                       class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-600">
+                                <p class="text-sm text-gray-500 mt-1">Set by save button below</p>
                             </div>
                         </div>
                         
@@ -272,16 +271,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                     
                     <!-- Action Buttons -->
+                    <input type="hidden" id="status" name="status" value="draft">
                     <div class="flex justify-between items-center">
                         <a href="/admin/posts/index.php" class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">
                             Cancel
                         </a>
                         <div class="space-x-3">
-                            <button type="submit" name="status" value="draft"
+                            <button type="button" onclick="document.getElementById('status').value='draft'; document.querySelector('form').submit();"
                                     class="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition">
                                 Save as Draft
                             </button>
-                            <button type="submit" name="status" value="published"
+                            <button type="button" onclick="document.getElementById('status').value='published'; document.querySelector('form').submit();"
                                     class="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition">
                                 Publish Post
                             </button>

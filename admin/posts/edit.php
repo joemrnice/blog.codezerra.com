@@ -122,6 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Post - Admin Panel</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Note: Replace 'no-api-key' with your TinyMCE API key for production use -->
     <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
 <body class="bg-gray-100">
@@ -315,21 +316,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     
     <script>
-        // Auto-generate slug from title (optional for edit)
-        document.getElementById('title').addEventListener('input', function(e) {
-            const title = e.target.value;
-            const slug = title
-                .toLowerCase()
-                .trim()
-                .replace(/[^a-z0-9\s-]/g, '')
-                .replace(/\s+/g, '-')
-                .replace(/-+/g, '-');
-            
-            // Only update slug if user wants to regenerate
-            const slugInput = document.getElementById('slug');
-            if (confirm('Generate new slug from title?')) {
-                slugInput.value = slug;
+        // Auto-generate slug from title (only on first edit, not every keystroke)
+        let originalSlug = document.getElementById('slug').value;
+        let slugModified = originalSlug !== '';
+        
+        document.getElementById('title').addEventListener('blur', function(e) {
+            // Only auto-generate if slug hasn't been manually modified
+            if (!slugModified) {
+                const title = e.target.value;
+                const slug = title
+                    .toLowerCase()
+                    .trim()
+                    .replace(/[^a-z0-9\s-]/g, '')
+                    .replace(/\s+/g, '-')
+                    .replace(/-+/g, '-');
+                document.getElementById('slug').value = slug;
             }
+        });
+        
+        // Track manual slug modifications
+        document.getElementById('slug').addEventListener('input', function() {
+            slugModified = true;
         });
         
         // Initialize TinyMCE
