@@ -1,0 +1,37 @@
+# Robots.txt for CodeZerra Blog
+# https://blog.codezerra.com/robots.txt
+
+User-agent: *
+Allow: /
+
+# Allow crawling of public pages
+Allow: /index.php
+Allow: /blog.php
+Allow: /post.php
+Allow: /about.php
+Allow: /contact.php
+Allow: /search.php
+
+# Allow assets
+Allow: /assets/
+Allow: /uploads/
+
+# Disallow admin area
+Disallow: /admin/
+
+# Disallow API endpoints
+Disallow: /api/
+
+# Disallow includes
+Disallow: /includes/
+
+# Disallow sensitive files
+Disallow: /.env
+Disallow: /schema.sql
+Disallow: /*.log
+
+# Sitemap location
+Sitemap: https://blog.codezerra.com/sitemap.xml
+
+# Crawl delay (optional, adjust as needed)
+Crawl-delay: 1

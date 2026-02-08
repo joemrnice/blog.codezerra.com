@@ -1,0 +1,49 @@
+# Environment Configuration
+.env
+
+# User Uploads
+uploads/*
+!uploads/.gitkeep
+
+# Logs
+logs/*
+*.log
+!logs/.gitkeep
+
+# Operating System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE Files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Temporary Files
+*.tmp
+*.swp
+*.swo
+*~
+
+# PHP
+vendor/
+composer.lock
+
+# Node Modules (if using npm for TailwindCSS)
+node_modules/
+package-lock.json
+
+# Build Files
+dist/
+build/
+
+# Database Backups
+*.sql.gz
+*.sql.zip
+backup/
