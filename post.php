@@ -236,6 +236,7 @@ $readingTime = calculateReadingTime($post['content']);
         <?php endif; ?>
 
         <!-- Post Content -->
+        <!-- Note: Content is not escaped as it contains trusted HTML from admin panel -->
         <div class="post-content prose max-w-none bg-white rounded-lg shadow-md p-8 mb-12">
             <?php echo $post['content']; ?>
         </div>
