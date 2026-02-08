@@ -277,11 +277,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             Cancel
                         </a>
                         <div class="space-x-3">
-                            <button type="button" onclick="document.getElementById('status').value='draft'; document.querySelector('form').submit();"
+                            <button type="button" onclick="updateStatus('draft')"
                                     class="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition">
                                 Save as Draft
                             </button>
-                            <button type="button" onclick="document.getElementById('status').value='published'; document.querySelector('form').submit();"
+                            <button type="button" onclick="updateStatus('published')"
                                     class="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition">
                                 Publish Post
                             </button>
@@ -293,17 +293,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     
     <script>
-        // Auto-generate slug from title
-        document.getElementById('title').addEventListener('input', function(e) {
-            const title = e.target.value;
-            const slug = title
-                .toLowerCase()
-                .trim()
-                .replace(/[^a-z0-9\s-]/g, '')
-                .replace(/\s+/g, '-')
-                .replace(/-+/g, '-');
-            document.getElementById('slug').value = slug;
+        // Auto-generate slug from title (on blur to avoid updating every keystroke)
+        document.getElementById('title').addEventListener('blur', function(e) {
+            const slugInput = document.getElementById('slug');
+            // Only auto-generate if slug is empty
+            if (!slugInput.value || slugInput.value === '') {
+                const title = e.target.value;
+                const slug = title
+                    .toLowerCase()
+                    .trim()
+                    .replace(/[^a-z0-9\s-]/g, '')
+                    .replace(/\s+/g, '-')
+                    .replace(/-+/g, '-');
+                slugInput.value = slug;
+            }
         });
+        
+        // Update status display when buttons are clicked
+        function updateStatus(status) {
+            const statusDisplay = document.getElementById('status-display');
+            const statusValue = document.getElementById('status');
+            statusValue.value = status;
+            statusDisplay.value = status.charAt(0).toUpperCase() + status.slice(1);
+            document.querySelector('form').submit();
+        }
         
         // Initialize TinyMCE
         tinymce.init({
